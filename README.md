@@ -1,24 +1,21 @@
-# Basic TypeScript Project
+# ts-test
 
-This is a basic TypeScript project scaffolded for development. It includes:
+## Run TypeScript Directly
 
-- TypeScript configuration (`tsconfig.json`)
-- An entry point (`src/index.ts`)
-- Instructions for Copilot customization (`.github/copilot-instructions.md`)
+This project is set up to run TypeScript files directly using `ts-node`.
 
-## Getting Started
+### Prerequisites
+- Node.js version 18+
+- npm
 
-1. Install dependencies:
-   ```bash
-   npm install
-   ```
+### Install dependencies
+```bash
+npm install
+```
 
-2. Build the project:
-   ```bash
-   npx tsc
-   ```
+### Run the project
+```bash
+npm run dev
+```
 
-3. Run the project:
-   ```bash
-   node dist/index.js
-   ```
+This will execute `src/index.ts` directly.

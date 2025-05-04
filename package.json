@@ -1,16 +1,19 @@
 {
-  "name": "untitled-folder",
+  "name": "ts-test",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx tsc && node dist/index.js"
+    "dev": "npx ts-node src/index.ts"
   },
   "keywords": [],
-  "author": "",
+  "author": "7una",
   "license": "ISC",
   "dependencies": {
     "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2"
   }
 }
