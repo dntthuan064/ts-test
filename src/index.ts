@@ -1,44 +1,42 @@
-// Entry point for the TypeScript project
-function solution(A: number[]): number {
-  if (A.length <= 1) {
-    return 0; // Can't make any trades with 0 or 1 prices
-  }
+// Dynamic task runner for practice tasks
 
-  let holdingAsset = true; // We start with 1 asset
+import path from "path";
 
-  // First, let's sell our initial asset at the best possible price
-  let initialSellPrice = Math.max(...A);
-  let initialSellIndex = A.indexOf(initialSellPrice);
+async function runTask(taskName: string) {
+  try {
+    // Use relative imports for ts-node compatibility
+    const solutionModule = await import(`../practice/${taskName}/solution.ts`);
+    const dataInputModule = await import(
+      `../practice/${taskName}/data-input.ts`
+    );
 
-  // If the max price is at the end, we can just sell our initial asset
-  if (initialSellIndex === A.length - 1) {
-    return initialSellPrice;
-  }
+    const solution = solutionModule.solution;
+    const inputData = dataInputModule.inputData;
 
-  // Process the prices to maximize profit
-  let currentIncome = 0;
-
-  for (let i = 0; i < A.length; i++) {
-    // If we're holding an asset and the next price is lower, sell now
-    if (holdingAsset && i < A.length - 1 && A[i] > A[i + 1]) {
-      currentIncome += A[i];
-      holdingAsset = false;
+    if (!solution || !inputData) {
+      console.error(
+        "Could not find solution or inputData export in the task module."
+      );
+      process.exit(1);
     }
-    // If we're not holding an asset and the next price is higher, buy now
-    else if (!holdingAsset && i < A.length - 1 && A[i] < A[i + 1]) {
-      currentIncome -= A[i];
-      holdingAsset = true;
-    }
-    // If we're at the last price and holding an asset, sell it
-    else if (holdingAsset && i === A.length - 1) {
-      currentIncome += A[i];
-    }
-  }
 
-  // Take the modulo as required
-  return currentIncome % 1000000000;
+    inputData.forEach((data: number[], idx: number) => {
+      console.log(`\nTest case #${idx + 1}: [${data.join(", ")}]`);
+      solution(data);
+    });
+  } catch (err) {
+    console.error(`Failed to run task '${taskName}':`, err);
+    process.exit(1);
+  }
 }
-// Example usage
-console.log(solution([4, 1, 2, 3])); // Output: 6
-console.log(solution([1, 2, 3, 3, 2, 1, 5])); // Output: 7
-console.log(solution([1000000000, 1, 2, 2, 1000000000, 1, 1000000000])); // Output: 999999998;
+
+// Get task name from command line arguments
+const [, , taskName] = process.argv;
+if (!taskName) {
+  console.error(
+    "Please provide a task name, e.g. 'npx ts-node src/index.ts task-1'"
+  );
+  process.exit(1);
+}
+
+runTask(taskName);
